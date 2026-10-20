@@ -1,0 +1,17 @@
+node_modules
+dist
+data
+var
+backups
+prototype
+docs
+tools
+qa
+.git
+.env
+.env.*
+tests
+deploy
+compose*.yaml
+*.sqlite*
+*.log

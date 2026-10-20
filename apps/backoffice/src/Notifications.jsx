@@ -1,0 +1,10 @@
+import React,{useEffect,useState} from 'react';
+import {api} from '../../../packages/shared/src/api.js';
+const status={pending:'En attente',sent:'Accepté par le serveur mail',failed:'Échec',expired:'Expiré'};
+export function Notifications(){
+ const [data,setData]=useState(null),[error,setError]=useState(''),[busy,setBusy]=useState(false);
+ async function load(){try{setData(await api('/api/admin/notifications'));setError('');}catch(e){setError(e.message);}}
+ useEffect(()=>{load();},[]);
+ async function retry(id){setBusy(true);try{await api(`/api/admin/notifications/${id}/retry`,{method:'POST',body:'{}'});await load();}catch(e){setError(e.message);}finally{setBusy(false);}}
+ return <section className="admin-section"><div className="admin-section-heading"><h2>Suivi des e-mails</h2><button className="button outline" onClick={load}>Actualiser les envois</button></div>{error&&<p className="admin-notice error" role="alert">{error}</p>}{!data?<p role="status">Chargement…</p>:<>{!data.configured&&<p className="admin-notice">SMTP n’est pas configuré. Aucun e-mail n’est envoyé ; les notifications restent en attente. Les paramètres SMTP se renseignent dans les variables privées de l’hébergement.</p>}<p className="small muted">Une acceptation par le serveur mail ne garantit pas l’arrivée en boîte de réception. Les liens de récupération ne sont jamais affichés ici.</p><div className="admin-table-wrap"><table><thead><tr><th>Objet</th><th>Destinataire</th><th>État</th><th>Action</th></tr></thead><tbody>{data.notifications.map(n=><tr key={n.id}><td>{n.subject}<small>{new Date(n.created_at).toLocaleString('fr-FR')}</small></td><td>{n.recipient}</td><td>{status[n.status]||n.status}<small>{n.last_error}</small></td><td>{n.status==='failed'&&n.kind!=='password-reset'&&<button className="button outline" disabled={busy||!data.configured} onClick={()=>retry(n.id)}>Réessayer</button>}</td></tr>)}</tbody></table>{!data.notifications.length&&<p>Aucun envoi enregistré.</p>}</div></>}</section>;
+}

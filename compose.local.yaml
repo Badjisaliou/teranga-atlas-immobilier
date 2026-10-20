@@ -1,0 +1,13 @@
+# Local testing only: HTTP on loopback, isolated data via the Compose project name.
+services:
+  app:
+    environment:
+      NODE_ENV: development
+      PUBLIC_ORIGIN: http://localhost:4180
+      TRUST_PROXY: "false"
+      TRUST_RAILWAY_PROXY: "false"
+      SEED_DEMO: "false"
+    ports:
+      - "127.0.0.1:4180:4173"
+  proxy:
+    profiles: [https]

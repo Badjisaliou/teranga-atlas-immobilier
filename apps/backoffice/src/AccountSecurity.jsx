@@ -1,0 +1,7 @@
+import React,{useState} from 'react';
+import {api} from '../../../packages/shared/src/api.js';
+export function AccountSecurity({onChanged}){
+ const [busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('');
+ async function save(e){e.preventDefault();const form=e.currentTarget,data=Object.fromEntries(new FormData(form));setError('');setNotice('');if(data.password!==data.confirm){setError('Les deux nouveaux mots de passe sont différents.');return;}setBusy(true);try{await api('/api/auth/password',{method:'POST',body:JSON.stringify(data)});form.reset();onChanged();setNotice('Votre mot de passe est modifié. Vos autres sessions sont déconnectées.');}catch(e){setError(e.message);}finally{setBusy(false);}}
+ return <form className="admin-section account-form" onSubmit={save}><h2>Changer mon mot de passe</h2>{error&&<p className="admin-notice error" role="alert">{error}</p>}{notice&&<p className="admin-notice" role="status">{notice}</p>}<label>Mot de passe actuel<input name="currentPassword" type="password" required maxLength={200} autoComplete="current-password"/></label><label>Nouveau mot de passe<input name="password" type="password" required minLength={12} maxLength={200} autoComplete="new-password"/></label><label>Confirmer le nouveau mot de passe<input name="confirm" type="password" required minLength={12} maxLength={200} autoComplete="new-password"/></label><button className="button green" disabled={busy}>{busy?'Enregistrement…':'Changer mon mot de passe'}</button></form>;
+}
