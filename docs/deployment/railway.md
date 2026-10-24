@@ -1,6 +1,12 @@
 # Mise en ligne sur Railway
 
-L’application est préparée pour Railway, mais aucun déploiement n’a été effectué. Le domaine Railway peut servir pour le premier lancement, avant le choix d’un domaine personnalisé.
+L’application est déployée depuis le 24 octobre 2026 : https://web-production-88df.up.railway.app. Administration : https://web-production-88df.up.railway.app/#/admin. Aucun domaine personnalisé n’est configuré.
+
+Le déploiement initial `9187d3df-b6c7-4f19-a96c-d518e72200df` a réussi depuis le commit `1733fc0`, envoyé par CLI. L’intégration GitHub Railway n’a pas accès au dépôt privé : les déploiements automatiques restent à activer. Projet `teranga-atlas-immobilier`, service `web`, environnement `production`, volume `web-volume` monté sur `/data`, une réplique. Aucune donnée locale ni donnée de test n’a été importée.
+
+Les contrôles HTTPS ont confirmé : accueil et `/healthz` HTTP 200, catalogue vide, configuration du premier compte protégée par code, demandes administratives HTTP 401 sans connexion et base SQLite inaccessible publiquement (HTTP 404). Le formulaire du premier compte a aussi été vérifié dans le navigateur. Le code privé est conservé uniquement dans `var/railway-production/admin-setup.txt`, exclu de Git. Aucun compte administrateur n’a été créé automatiquement.
+
+Les sauvegardes planifiées du volume n’ont pas pu être activées : l’API Railway les réserve au forfait Pro de l’espace de travail. Aucun changement d’abonnement n’a été effectué. Prévoir une sauvegarde externe avant de saisir des données importantes. SMTP et Cloudinary ne sont pas configurés ; les médias utilisent le volume local.
 
 ## Service et stockage
 
@@ -14,7 +20,7 @@ L’application est préparée pour Railway, mais aucun déploiement n’a été
 
 Le démarrage refuse une origine HTTP ou un stockage Railway sans volume. Les annonces de démonstration ne sont ni initialisées ni exposées en production. Les cookies administrateur utilisent HTTPS. Les en-têtes du proxy ne sont utilisés que lorsque `TRUST_RAILWAY_PROXY=true` ; réserver ce réglage au service derrière le proxy Railway.
 
-Aucun `railway.json` n’est ajouté : Railway annonce la fin de Config as Code au 1er décembre 2026. Les paramètres ci-dessus sont à renseigner dans le tableau de bord : [référence Railway](https://docs.railway.com/config-as-code/reference).
+Aucun `railway.json` n’est ajouté. Les paramètres de santé, Dockerfile et réplique unique ont été appliqués par l’API Railway ; ils sont également visibles dans le tableau de bord.
 
 ## Premier accès
 
@@ -34,9 +40,9 @@ Pour restaurer : arrêter le service, conserver une copie des données actuelles
 
 ## Vérifications et limites
 
-`npm run test:api`, `npm run test:production` et `npm run build` vérifient les parcours et le paquet. `npm run check:production`, exécuté dans le conteneur avec les variables et le volume, contrôle les prérequis techniques avant ouverture. Après réorganisation, le Dockerfile utilise apps/ et packages/. Sa construction et le fonctionnement Compose ont été validés avec Docker Desktop. La configuration du domaine et du volume Railway reste à vérifier au premier déploiement.
+`npm run test:api`, `npm run test:production` et `npm run build` vérifient les parcours et le paquet. `npm run check:production`, exécuté dans le conteneur avec les variables et le volume, contrôle les prérequis techniques avant ouverture. Après réorganisation, le Dockerfile utilise apps/ et packages/. Sa construction et le fonctionnement Compose ont été validés avec Docker Desktop. Le domaine HTTPS et le volume ont été vérifiés au déploiement initial du 24 octobre 2026.
 
-À compléter selon le périmètre de lancement : notifications externes, comptes agents avec droits séparés, récupération de mot de passe, traductions anglais/arabe, export PDF et référencement des fiches avec de vraies URL (les routes actuelles utilisent `#`). Une réservation reste une demande à traiter ; aucun paiement ou engagement contractuel automatique n’est réalisé.
+À compléter selon le périmètre de lancement : activation SMTP pour les notifications et la récupération de mot de passe, validation métier des droits agents, traductions anglais/arabe, export PDF et référencement des fiches avec de vraies URL (les routes actuelles utilisent `#`). Une réservation reste une demande à traiter ; aucun paiement ou engagement contractuel automatique n’est réalisé.
 
 ## Stockage photo Cloudinary (optionnel)
 
