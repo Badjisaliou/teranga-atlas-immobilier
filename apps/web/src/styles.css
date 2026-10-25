@@ -23,3 +23,5 @@ h1,h2,h3{font-family:Georgia,'Times New Roman',serif;font-weight:700}h1{font-siz
 .mobile-cta{display:none}@media(max-width:600px){.desktop-cta{display:none}.mobile-cta{display:inline}}
 .choice input{min-height:17px}.choice{min-height:28px}@media(max-width:600px){.mobile-filter-content .choice{min-height:44px}}
 .contact-panel button:disabled,.mobile-contact button:disabled{opacity:.5;cursor:not-allowed}
+
+.returns-policy{max-width:880px;margin:0 auto;line-height:1.75}.returns-policy h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.15}.returns-policy section{margin-top:2rem}.returns-policy h2{font-size:1.45rem;line-height:1.3}.returns-policy p{margin:1rem 0}.returns-policy a{text-decoration:underline;text-underline-offset:3px}
