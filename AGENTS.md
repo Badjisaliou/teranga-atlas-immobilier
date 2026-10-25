@@ -1,7 +1,5 @@
 # Project Instructions
 
-- 25 octobre 2026 : ajout demandé d’une page de retours pour les produits physiques vendus au Sénégal (bureautique, électroménager, Longrich). Politique commerciale limitée aux défauts, sans exclusion des droits légaux de rétractation et de conformité. Cette page ne transforme pas le catalogue immobilier en boutique.
-
 ## Choix approuvés — 14 octobre 2026
 
 - Hébergement choisi : Railway. Aucun domaine personnalisé choisi. Préserver le volume SQLite et les photos ; utiliser une seule réplique avec cette architecture.
